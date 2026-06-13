@@ -14,6 +14,34 @@ from .models import (
 
 class RegistroEmprendedorForm(forms.ModelForm):
 
+    # Campos con validación condicional — required=False para que
+    # el método clean() controle cuándo son obligatorios
+    correo_institucional = forms.EmailField(
+        required=False,
+        label='Correo institucional UNEMI',
+        widget=forms.EmailInput(attrs={'placeholder': 'usuario@unemi.edu.ec'}),
+    )
+    correo_personal = forms.EmailField(
+        required=False,
+        label='Correo electrónico personal',
+        widget=forms.EmailInput(attrs={'placeholder': 'correo@ejemplo.com'}),
+    )
+    carrera_actual = forms.CharField(
+        required=False,
+        label='Carrera que cursa actualmente',
+        widget=forms.TextInput(attrs={'placeholder': 'Nombre de la carrera'}),
+    )
+    semestre_actual = forms.CharField(
+        required=False,
+        label='Semestre actual',
+        widget=forms.TextInput(attrs={'placeholder': 'Ej: 5to semestre'}),
+    )
+    carrera_graduado = forms.CharField(
+        required=False,
+        label='Carrera de graduación',
+        widget=forms.TextInput(attrs={'placeholder': 'Carrera de la que se graduó'}),
+    )
+
     # Selección múltiple con checkboxes
     capacitacion_intereses = forms.MultipleChoiceField(
         choices=CapacitacionChoices.choices,
@@ -57,12 +85,9 @@ class RegistroEmprendedorForm(forms.ModelForm):
             'sexo':                  forms.Select(choices=[('', '---------')] + SexoChoices.choices),
             'whatsapp':              forms.TextInput(attrs={'placeholder': 'Ej: +593 99 999 9999'}),
             'vinculacion':           forms.Select(choices=[('', '---------')] + VinculacionChoices.choices),
-            'correo_institucional':  forms.EmailInput(attrs={'placeholder': 'usuario@unemi.edu.ec'}),
-            # correo_personal se maneja manualmente en el template (inputs duplicados)
-            'correo_personal':       forms.EmailInput(attrs={'placeholder': 'correo@ejemplo.com'}),
-            'carrera_actual':        forms.TextInput(attrs={'placeholder': 'Nombre de la carrera'}),
-            'semestre_actual':       forms.TextInput(attrs={'placeholder': 'Ej: 5to semestre'}),
-            'carrera_graduado':      forms.TextInput(attrs={'placeholder': 'Carrera de la que se graduó'}),
+            # correo_institucional, correo_personal, carrera_actual,
+            # semestre_actual y carrera_graduado se definen arriba como campos
+            # explícitos con required=False, por eso no van aquí en widgets.
             'provincia':             forms.TextInput(attrs={'placeholder': 'Provincia'}),
             'canton':                forms.TextInput(attrs={'placeholder': 'Cantón o ciudad'}),
             'nombre_emprendimiento': forms.TextInput(attrs={'placeholder': 'Nombre del negocio'}),
