@@ -23,187 +23,156 @@
     <form method="post" enctype="multipart/form-data" novalidate>
       {% csrf_token %}
 
-      {# ── Sección 1: Información general ────────────────────────────────── #}
+      {# ── Sección 1 ──────────────────────────────────────────────────────── #}
       <section class="form-section">
         <h2 class="section-title">Sección 1 &mdash; Información General</h2>
 
         <div class="field {% if form.cedula.errors %}field--error{% endif %}">
-          <label for="{{ form.cedula.id_for_label }}">
-            {{ form.cedula.label }} <span class="required">*</span>
-          </label>
+          <label for="{{ form.cedula.id_for_label }}">{{ form.cedula.label }} <span class="required">*</span></label>
           {{ form.cedula }}
-          {% for error in form.cedula.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+          {% for e in form.cedula.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
         </div>
 
         <div class="field {% if form.nombres_apellidos.errors %}field--error{% endif %}">
-          <label for="{{ form.nombres_apellidos.id_for_label }}">
-            {{ form.nombres_apellidos.label }} <span class="required">*</span>
-          </label>
+          <label for="{{ form.nombres_apellidos.id_for_label }}">{{ form.nombres_apellidos.label }} <span class="required">*</span></label>
           {{ form.nombres_apellidos }}
-          {% for error in form.nombres_apellidos.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+          {% for e in form.nombres_apellidos.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
         </div>
 
         <div class="field-row">
           <div class="field {% if form.edad.errors %}field--error{% endif %}">
-            <label for="{{ form.edad.id_for_label }}">
-              {{ form.edad.label }} <span class="required">*</span>
-            </label>
+            <label for="{{ form.edad.id_for_label }}">{{ form.edad.label }} <span class="required">*</span></label>
             {{ form.edad }}
-            {% for error in form.edad.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+            {% for e in form.edad.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
           </div>
-
           <div class="field {% if form.sexo.errors %}field--error{% endif %}">
-            <label for="{{ form.sexo.id_for_label }}">
-              {{ form.sexo.label }} <span class="required">*</span>
-            </label>
+            <label for="{{ form.sexo.id_for_label }}">{{ form.sexo.label }} <span class="required">*</span></label>
             {{ form.sexo }}
-            {% for error in form.sexo.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+            {% for e in form.sexo.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
           </div>
         </div>
 
         <div class="field {% if form.whatsapp.errors %}field--error{% endif %}">
-          <label for="{{ form.whatsapp.id_for_label }}">
-            {{ form.whatsapp.label }} <span class="required">*</span>
-          </label>
+          <label for="{{ form.whatsapp.id_for_label }}">{{ form.whatsapp.label }} <span class="required">*</span></label>
           {{ form.whatsapp }}
-          {% for error in form.whatsapp.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+          {% for e in form.whatsapp.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
         </div>
       </section>
 
-      {# ── Sección 2: Vinculación con UNEMI ───────────────────────────────── #}
+      {# ── Sección 2 ──────────────────────────────────────────────────────── #}
       <section class="form-section">
         <h2 class="section-title">Sección 2 &mdash; Vinculación con UNEMI</h2>
 
         <div class="field {% if form.vinculacion.errors %}field--error{% endif %}">
-          <label for="{{ form.vinculacion.id_for_label }}">
-            {{ form.vinculacion.label }} <span class="required">*</span>
-          </label>
+          <label for="{{ form.vinculacion.id_for_label }}">{{ form.vinculacion.label }} <span class="required">*</span></label>
           {{ form.vinculacion }}
-          {% for error in form.vinculacion.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+          {% for e in form.vinculacion.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
         </div>
 
-        {# Campos condicionales — mostrados/ocultados con JS #}
+        {# Estudiante #}
         <div id="fields-estudiante" class="conditional-group" hidden>
-          <div class="field">
-            <label for="{{ form.correo_institucional.id_for_label }}">
-              {{ form.correo_institucional.label }} <span class="required">*</span>
-            </label>
+          <div class="field {% if form.correo_institucional.errors %}field--error{% endif %}">
+            <label for="{{ form.correo_institucional.id_for_label }}">{{ form.correo_institucional.label }} <span class="required">*</span></label>
             {{ form.correo_institucional }}
-            {% for error in form.correo_institucional.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+            {% for e in form.correo_institucional.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
           </div>
-          <div class="field">
-            <label for="{{ form.correo_personal.id_for_label }}">
-              {{ form.correo_personal.label }} <span class="required">*</span>
-            </label>
-            {{ form.correo_personal }}
-            {% for error in form.correo_personal.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+          <div class="field {% if form.correo_personal.errors %}field--error{% endif %}">
+            <label for="id_correo_personal_est">Correo electrónico personal <span class="required">*</span></label>
+            <input type="email" name="correo_personal" id="id_correo_personal_est"
+                   placeholder="correo@ejemplo.com"
+                   value="{{ form.correo_personal.value|default:'' }}">
+            {% for e in form.correo_personal.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
           </div>
-          <div class="field">
-            <label for="{{ form.carrera_actual.id_for_label }}">
-              {{ form.carrera_actual.label }} <span class="required">*</span>
-            </label>
+          <div class="field {% if form.carrera_actual.errors %}field--error{% endif %}">
+            <label for="{{ form.carrera_actual.id_for_label }}">{{ form.carrera_actual.label }} <span class="required">*</span></label>
             {{ form.carrera_actual }}
-            {% for error in form.carrera_actual.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+            {% for e in form.carrera_actual.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
           </div>
-          <div class="field">
-            <label for="{{ form.semestre_actual.id_for_label }}">
-              {{ form.semestre_actual.label }} <span class="required">*</span>
-            </label>
+          <div class="field {% if form.semestre_actual.errors %}field--error{% endif %}">
+            <label for="{{ form.semestre_actual.id_for_label }}">{{ form.semestre_actual.label }} <span class="required">*</span></label>
             {{ form.semestre_actual }}
-            {% for error in form.semestre_actual.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+            {% for e in form.semestre_actual.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
           </div>
         </div>
 
+        {# Graduado #}
         <div id="fields-graduado" class="conditional-group" hidden>
           <div class="field">
-            <label for="{{ form.correo_personal.id_for_label }}">
-              {{ form.correo_personal.label }} <span class="required">*</span>
-            </label>
-            {{ form.correo_personal }}
+            <label for="id_correo_personal_grad">Correo electrónico personal <span class="required">*</span></label>
+            <input type="email" name="correo_personal" id="id_correo_personal_grad"
+                   placeholder="correo@ejemplo.com"
+                   value="{{ form.correo_personal.value|default:'' }}">
           </div>
-          <div class="field">
-            <label for="{{ form.carrera_graduado.id_for_label }}">
-              {{ form.carrera_graduado.label }} <span class="required">*</span>
-            </label>
+          <div class="field {% if form.carrera_graduado.errors %}field--error{% endif %}">
+            <label for="{{ form.carrera_graduado.id_for_label }}">{{ form.carrera_graduado.label }} <span class="required">*</span></label>
             {{ form.carrera_graduado }}
-            {% for error in form.carrera_graduado.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+            {% for e in form.carrera_graduado.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
           </div>
         </div>
 
+        {# Docente / Administrativo #}
         <div id="fields-docente-admin" class="conditional-group" hidden>
-          <div class="field">
-            <label for="{{ form.correo_institucional.id_for_label }}">
-              {{ form.correo_institucional.label }} <span class="required">*</span>
-            </label>
+          <div class="field {% if form.correo_institucional.errors %}field--error{% endif %}">
+            <label for="{{ form.correo_institucional.id_for_label }}">{{ form.correo_institucional.label }} <span class="required">*</span></label>
             {{ form.correo_institucional }}
+            {% for e in form.correo_institucional.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
           </div>
           <div class="field">
-            <label for="{{ form.correo_personal.id_for_label }}">
-              {{ form.correo_personal.label }} <small>(Opcional)</small>
-            </label>
-            {{ form.correo_personal }}
+            <label for="id_correo_personal_admin">Correo electrónico personal <small>(Opcional)</small></label>
+            <input type="email" name="correo_personal" id="id_correo_personal_admin"
+                   placeholder="correo@ejemplo.com"
+                   value="{{ form.correo_personal.value|default:'' }}">
           </div>
         </div>
 
+        {# Retirado / Externo / Otro #}
         <div id="fields-externo-otro" class="conditional-group" hidden>
           <div class="field">
-            <label for="{{ form.correo_personal.id_for_label }}">
-              {{ form.correo_personal.label }} <span class="required">*</span>
-            </label>
-            {{ form.correo_personal }}
+            <label for="id_correo_personal_ext">Correo electrónico personal <span class="required">*</span></label>
+            <input type="email" name="correo_personal" id="id_correo_personal_ext"
+                   placeholder="correo@ejemplo.com"
+                   value="{{ form.correo_personal.value|default:'' }}">
           </div>
         </div>
       </section>
 
-      {# ── Sección 3: Ubicación ───────────────────────────────────────────── #}
+      {# ── Sección 3 ──────────────────────────────────────────────────────── #}
       <section class="form-section">
         <h2 class="section-title">Sección 3 &mdash; Ubicación</h2>
-
         <div class="field-row">
           <div class="field {% if form.provincia.errors %}field--error{% endif %}">
-            <label for="{{ form.provincia.id_for_label }}">
-              {{ form.provincia.label }} <span class="required">*</span>
-            </label>
+            <label for="{{ form.provincia.id_for_label }}">{{ form.provincia.label }} <span class="required">*</span></label>
             {{ form.provincia }}
-            {% for error in form.provincia.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+            {% for e in form.provincia.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
           </div>
-
           <div class="field {% if form.canton.errors %}field--error{% endif %}">
-            <label for="{{ form.canton.id_for_label }}">
-              {{ form.canton.label }} <span class="required">*</span>
-            </label>
+            <label for="{{ form.canton.id_for_label }}">{{ form.canton.label }} <span class="required">*</span></label>
             {{ form.canton }}
-            {% for error in form.canton.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+            {% for e in form.canton.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
           </div>
         </div>
       </section>
 
-      {# ── Sección 4: Información del emprendimiento ──────────────────────── #}
+      {# ── Sección 4 ──────────────────────────────────────────────────────── #}
       <section class="form-section">
         <h2 class="section-title">Sección 4 &mdash; Información del Emprendimiento</h2>
 
         <div class="field {% if form.nombre_emprendimiento.errors %}field--error{% endif %}">
-          <label for="{{ form.nombre_emprendimiento.id_for_label }}">
-            {{ form.nombre_emprendimiento.label }} <span class="required">*</span>
-          </label>
+          <label for="{{ form.nombre_emprendimiento.id_for_label }}">{{ form.nombre_emprendimiento.label }} <span class="required">*</span></label>
           {{ form.nombre_emprendimiento }}
-          {% for error in form.nombre_emprendimiento.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+          {% for e in form.nombre_emprendimiento.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
         </div>
 
         <div class="field {% if form.descripcion_productos.errors %}field--error{% endif %}">
-          <label for="{{ form.descripcion_productos.id_for_label }}">
-            {{ form.descripcion_productos.label }} <span class="required">*</span>
-          </label>
+          <label for="{{ form.descripcion_productos.id_for_label }}">{{ form.descripcion_productos.label }} <span class="required">*</span></label>
           {{ form.descripcion_productos }}
-          {% for error in form.descripcion_productos.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+          {% for e in form.descripcion_productos.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
         </div>
 
         <div class="field {% if form.categoria.errors %}field--error{% endif %}">
-          <label for="{{ form.categoria.id_for_label }}">
-            {{ form.categoria.label }} <span class="required">*</span>
-          </label>
+          <label for="{{ form.categoria.id_for_label }}">{{ form.categoria.label }} <span class="required">*</span></label>
           {{ form.categoria }}
-          {% for error in form.categoria.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+          {% for e in form.categoria.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
         </div>
 
         <div id="field-categoria-otro" class="conditional-group" hidden>
@@ -214,46 +183,38 @@
         </div>
 
         <div class="field {% if form.tiempo_funcionamiento.errors %}field--error{% endif %}">
-          <label for="{{ form.tiempo_funcionamiento.id_for_label }}">
-            {{ form.tiempo_funcionamiento.label }} <span class="required">*</span>
-          </label>
+          <label for="{{ form.tiempo_funcionamiento.id_for_label }}">{{ form.tiempo_funcionamiento.label }} <span class="required">*</span></label>
           {{ form.tiempo_funcionamiento }}
-          {% for error in form.tiempo_funcionamiento.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+          {% for e in form.tiempo_funcionamiento.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
         </div>
 
         <div class="field {% if form.numero_colaboradores.errors %}field--error{% endif %}">
-          <label for="{{ form.numero_colaboradores.id_for_label }}">
-            {{ form.numero_colaboradores.label }} <span class="required">*</span>
-          </label>
+          <label for="{{ form.numero_colaboradores.id_for_label }}">{{ form.numero_colaboradores.label }} <span class="required">*</span></label>
           {{ form.numero_colaboradores }}
-          {% for error in form.numero_colaboradores.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+          {% for e in form.numero_colaboradores.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
         </div>
 
         <div class="field {% if form.direccion.errors %}field--error{% endif %}">
-          <label for="{{ form.direccion.id_for_label }}">
-            {{ form.direccion.label }} <span class="required">*</span>
-          </label>
+          <label for="{{ form.direccion.id_for_label }}">{{ form.direccion.label }} <span class="required">*</span></label>
           {{ form.direccion }}
-          {% for error in form.direccion.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+          {% for e in form.direccion.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
         </div>
 
         <div class="field {% if form.redes_sociales.errors %}field--error{% endif %}">
-          <label for="{{ form.redes_sociales.id_for_label }}">
-            {{ form.redes_sociales.label }} <span class="required">*</span>
-          </label>
+          <label for="{{ form.redes_sociales.id_for_label }}">{{ form.redes_sociales.label }} <span class="required">*</span></label>
           {{ form.redes_sociales }}
-          {% for error in form.redes_sociales.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+          {% for e in form.redes_sociales.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
         </div>
       </section>
 
-      {# ── Sección 5: Formalización ───────────────────────────────────────── #}
+      {# ── Sección 5 ──────────────────────────────────────────────────────── #}
       <section class="form-section">
         <h2 class="section-title">Sección 5 &mdash; Formalización</h2>
 
         <div class="field {% if form.tiene_ruc.errors %}field--error{% endif %}">
-          <label>{{ form.tiene_ruc.label }} <span class="required">*</span></label>
+          <label for="{{ form.tiene_ruc.id_for_label }}">{{ form.tiene_ruc.label }} <span class="required">*</span></label>
           {{ form.tiene_ruc }}
-          {% for error in form.tiene_ruc.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+          {% for e in form.tiene_ruc.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
         </div>
 
         <div id="fields-ruc" class="conditional-group" hidden>
@@ -268,11 +229,9 @@
         </div>
 
         <div class="field {% if form.permisos_funcionamiento.errors %}field--error{% endif %}">
-          <label for="{{ form.permisos_funcionamiento.id_for_label }}">
-            {{ form.permisos_funcionamiento.label }} <span class="required">*</span>
-          </label>
+          <label for="{{ form.permisos_funcionamiento.id_for_label }}">{{ form.permisos_funcionamiento.label }} <span class="required">*</span></label>
           {{ form.permisos_funcionamiento }}
-          {% for error in form.permisos_funcionamiento.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+          {% for e in form.permisos_funcionamiento.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
         </div>
 
         <div class="field">
@@ -281,17 +240,15 @@
         </div>
       </section>
 
-      {# ── Sección 6: Intereses de capacitación ──────────────────────────── #}
+      {# ── Sección 6 ──────────────────────────────────────────────────────── #}
       <section class="form-section">
         <h2 class="section-title">Sección 6 &mdash; Intereses de Capacitación</h2>
         <p class="hint">Puede seleccionar varias opciones.</p>
 
         <div class="field {% if form.capacitacion_intereses.errors %}field--error{% endif %}">
           <label>{{ form.capacitacion_intereses.label }}</label>
-          <div class="checkbox-grid">
-            {{ form.capacitacion_intereses }}
-          </div>
-          {% for error in form.capacitacion_intereses.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+          <div class="checkbox-grid">{{ form.capacitacion_intereses }}</div>
+          {% for e in form.capacitacion_intereses.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
         </div>
 
         <div id="field-capacitacion-otro" class="conditional-group" hidden>
@@ -302,20 +259,18 @@
         </div>
       </section>
 
-      {# ── Sección 7: Información complementaria ─────────────────────────── #}
+      {# ── Sección 7 ──────────────────────────────────────────────────────── #}
       <section class="form-section">
         <h2 class="section-title">Sección 7 &mdash; Información Complementaria</h2>
 
         <div class="field {% if form.participo_anteriormente.errors %}field--error{% endif %}">
-          <label>{{ form.participo_anteriormente.label }}</label>
+          <label for="{{ form.participo_anteriormente.id_for_label }}">{{ form.participo_anteriormente.label }}</label>
           {{ form.participo_anteriormente }}
-          {% for error in form.participo_anteriormente.errors %}<p class="error-msg">{{ error }}</p>{% endfor %}
+          {% for e in form.participo_anteriormente.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
         </div>
 
         <div class="field">
-          <label for="{{ form.comentarios.id_for_label }}">
-            {{ form.comentarios.label }} <small>(Opcional)</small>
-          </label>
+          <label for="{{ form.comentarios.id_for_label }}">{{ form.comentarios.label }} <small>(Opcional)</small></label>
           {{ form.comentarios }}
         </div>
       </section>
@@ -327,46 +282,52 @@
   </div>
 
   <script>
-    // ── Lógica condicional de vinculación ────────────────────────────────────
-    const vinculacionSelect = document.getElementById('{{ form.vinculacion.id_for_label }}');
+    // ── Vinculación ──────────────────────────────────────────────────────────
+    const vinculacionSelect = document.getElementById('id_vinculacion');
 
-    const conditionalMap = {
-      estudiante:      'fields-estudiante',
-      graduado:        'fields-graduado',
-      docente:         'fields-docente-admin',
-      administrativo:  'fields-docente-admin',
-      retirado:        'fields-externo-otro',
-      externo:         'fields-externo-otro',
-      otro:            'fields-externo-otro',
+    const vinculacionMap = {
+      estudiante:     'fields-estudiante',
+      graduado:       'fields-graduado',
+      docente:        'fields-docente-admin',
+      administrativo: 'fields-docente-admin',
+      retirado:       'fields-externo-otro',
+      externo:        'fields-externo-otro',
+      otro:           'fields-externo-otro',
     };
-    const allGroups = [...new Set(Object.values(conditionalMap))];
+    const allVinculacionGroups = [...new Set(Object.values(vinculacionMap))];
+
+    // Sincronizar todos los inputs de correo_personal entre sí
+    const correoInputs = document.querySelectorAll('input[name="correo_personal"]');
+    correoInputs.forEach(input => {
+      input.addEventListener('input', e => {
+        correoInputs.forEach(other => { other.value = e.target.value; });
+      });
+    });
 
     function updateVinculacion() {
       const val = vinculacionSelect.value;
-      allGroups.forEach(id => {
+      allVinculacionGroups.forEach(id => {
         document.getElementById(id).hidden = true;
       });
-      if (val && conditionalMap[val]) {
-        document.getElementById(conditionalMap[val]).hidden = false;
+      if (val && vinculacionMap[val]) {
+        document.getElementById(vinculacionMap[val]).hidden = false;
       }
     }
     vinculacionSelect.addEventListener('change', updateVinculacion);
-    updateVinculacion(); // ejecutar al cargar para restaurar estado tras error de validación
+    updateVinculacion();
 
     // ── Categoría "Otro" ─────────────────────────────────────────────────────
-    const categoriaSelect = document.getElementById('{{ form.categoria.id_for_label }}');
+    const categoriaSelect = document.getElementById('id_categoria');
     const categoriaOtroGroup = document.getElementById('field-categoria-otro');
-
     function updateCategoria() {
       categoriaOtroGroup.hidden = categoriaSelect.value !== 'otro';
     }
     categoriaSelect.addEventListener('change', updateCategoria);
     updateCategoria();
 
-    // ── RUC / RIMPE condicional ──────────────────────────────────────────────
-    const tieneRucSelect = document.getElementById('{{ form.tiene_ruc.id_for_label }}');
+    // ── RUC condicional ──────────────────────────────────────────────────────
+    const tieneRucSelect = document.getElementById('id_tiene_ruc');
     const rucGroup = document.getElementById('fields-ruc');
-
     function updateRuc() {
       rucGroup.hidden = tieneRucSelect.value !== 'True';
     }
@@ -376,7 +337,6 @@
     // ── Capacitación "Otro" ──────────────────────────────────────────────────
     const capacitacionCheckboxes = document.querySelectorAll('input[name="capacitacion_intereses"]');
     const capacitacionOtroGroup = document.getElementById('field-capacitacion-otro');
-
     function updateCapacitacion() {
       const otroChecked = [...capacitacionCheckboxes].some(cb => cb.value === 'otro' && cb.checked);
       capacitacionOtroGroup.hidden = !otroChecked;
