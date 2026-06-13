@@ -72,8 +72,10 @@
         {# Estudiante #}
         <div id="fields-estudiante" class="conditional-group" hidden>
           <div class="field {% if form.correo_institucional.errors %}field--error{% endif %}">
-            <label for="{{ form.correo_institucional.id_for_label }}">{{ form.correo_institucional.label }} <span class="required">*</span></label>
-            {{ form.correo_institucional }}
+            <label for="id_correo_institucional_est">{{ form.correo_institucional.label }} <span class="required">*</span></label>
+            <input type="email" name="correo_institucional" id="id_correo_institucional_est"
+                   placeholder="usuario@unemi.edu.ec"
+                   value="{{ form.correo_institucional.value|default:'' }}">
             {% for e in form.correo_institucional.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
           </div>
           <div class="field {% if form.correo_personal.errors %}field--error{% endif %}">
@@ -97,11 +99,12 @@
 
         {# Graduado #}
         <div id="fields-graduado" class="conditional-group" hidden>
-          <div class="field">
+          <div class="field {% if form.correo_personal.errors %}field--error{% endif %}">
             <label for="id_correo_personal_grad">Correo electrónico personal <span class="required">*</span></label>
             <input type="email" name="correo_personal" id="id_correo_personal_grad"
                    placeholder="correo@ejemplo.com"
                    value="{{ form.correo_personal.value|default:'' }}">
+            {% for e in form.correo_personal.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
           </div>
           <div class="field {% if form.carrera_graduado.errors %}field--error{% endif %}">
             <label for="{{ form.carrera_graduado.id_for_label }}">{{ form.carrera_graduado.label }} <span class="required">*</span></label>
@@ -113,8 +116,10 @@
         {# Docente / Administrativo #}
         <div id="fields-docente-admin" class="conditional-group" hidden>
           <div class="field {% if form.correo_institucional.errors %}field--error{% endif %}">
-            <label for="{{ form.correo_institucional.id_for_label }}">{{ form.correo_institucional.label }} <span class="required">*</span></label>
-            {{ form.correo_institucional }}
+            <label for="id_correo_institucional_doc">{{ form.correo_institucional.label }} <span class="required">*</span></label>
+            <input type="email" name="correo_institucional" id="id_correo_institucional_doc"
+                   placeholder="usuario@unemi.edu.ec"
+                   value="{{ form.correo_institucional.value|default:'' }}">
             {% for e in form.correo_institucional.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
           </div>
           <div class="field">
@@ -127,11 +132,12 @@
 
         {# Retirado / Externo / Otro #}
         <div id="fields-externo-otro" class="conditional-group" hidden>
-          <div class="field">
+          <div class="field {% if form.correo_personal.errors %}field--error{% endif %}">
             <label for="id_correo_personal_ext">Correo electrónico personal <span class="required">*</span></label>
             <input type="email" name="correo_personal" id="id_correo_personal_ext"
                    placeholder="correo@ejemplo.com"
                    value="{{ form.correo_personal.value|default:'' }}">
+            {% for e in form.correo_personal.errors %}<p class="error-msg">{{ e }}</p>{% endfor %}
           </div>
         </div>
       </section>
@@ -297,10 +303,18 @@
     const allVinculacionGroups = [...new Set(Object.values(vinculacionMap))];
 
     // Sincronizar todos los inputs de correo_personal entre sí
-    const correoInputs = document.querySelectorAll('input[name="correo_personal"]');
-    correoInputs.forEach(input => {
+    const correoPersonalInputs = document.querySelectorAll('input[name="correo_personal"]');
+    correoPersonalInputs.forEach(input => {
       input.addEventListener('input', e => {
-        correoInputs.forEach(other => { other.value = e.target.value; });
+        correoPersonalInputs.forEach(other => { other.value = e.target.value; });
+      });
+    });
+
+    // Sincronizar todos los inputs de correo_institucional entre sí
+    const correoInstInputs = document.querySelectorAll('input[name="correo_institucional"]');
+    correoInstInputs.forEach(input => {
+      input.addEventListener('input', e => {
+        correoInstInputs.forEach(other => { other.value = e.target.value; });
       });
     });
 
