@@ -1,0 +1,160 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Listado de Emprendedores — Red UNEMI</title>
+  <link rel="stylesheet" href="{% static 'listado.css' %}">
+</head>
+<body>
+  <div class="container">
+
+    <header class="form-header">
+      <h1>Red de Emprendedores UNEMI</h1>
+      <p class="subtitle">Listado de emprendedores registrados</p>
+    </header>
+
+    {# ── Barra de búsqueda y filtros ───────────────────────────────────── #}
+    <section class="filter-bar">
+      <form method="get" class="filter-form" novalidate>
+        <div class="filter-search">
+          <input
+            type="text"
+            name="q"
+            value="{{ q }}"
+            placeholder="Buscar por nombre, cédula o emprendimiento…"
+            class="search-input"
+          />
+        </div>
+
+        <div class="filter-selects">
+          <select name="categoria">
+            <option value="">Todas las categorías</option>
+            {% for val, label in categorias %}
+              <option value="{{ val }}" {% if filtro_categoria == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+
+          <select name="vinculacion">
+            <option value="">Todas las vinculaciones</option>
+            {% for val, label in vinculaciones %}
+              <option value="{{ val }}" {% if filtro_vinculacion == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+
+          <button type="submit" class="btn btn--primary">Filtrar</button>
+          {% if q or filtro_categoria or filtro_vinculacion %}
+            <a href="{% url 'portal:listado' %}" class="btn btn--outline">Limpiar</a>
+          {% endif %}
+        </div>
+      </form>
+    </section>
+
+    {# ── Contador de resultados ────────────────────────────────────────── #}
+    <div class="results-meta">
+      <span class="results-count">
+        {% if page_obj.paginator.count == 1 %}
+          1 emprendedor encontrado
+        {% else %}
+          {{ page_obj.paginator.count }} emprendedores encontrados
+        {% endif %}
+      </span>
+      {% if q or filtro_categoria or filtro_vinculacion %}
+        <span class="results-filtered">— resultados filtrados</span>
+      {% endif %}
+    </div>
+
+    {# ── Tabla ─────────────────────────────────────────────────────────── #}
+    {% if emprendedores %}
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nombre completo</th>
+              <th>Cédula</th>
+              <th>Emprendimiento</th>
+              <th>Categoría</th>
+              <th>Vinculación</th>
+              <th>WhatsApp</th>
+              <th>Fecha de registro</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for e in emprendedores %}
+            <tr>
+              <td class="td-num">{{ forloop.counter }}</td>
+              <td class="td-name">{{ e.nombres_apellidos }}</td>
+              <td class="td-mono">{{ e.cedula }}</td>
+              <td>
+                <span class="emprendimiento-name">{{ e.nombre_emprendimiento }}</span>
+              </td>
+              <td>
+                <span class="badge badge--categoria">{{ e.get_categoria_display }}</span>
+              </td>
+              <td>
+                <span class="badge badge--vinculacion">{{ e.get_vinculacion_display }}</span>
+              </td>
+              <td class="td-mono">{{ e.whatsapp }}</td>
+              <td class="td-date">{{ e.fecha_registro|date:"d/m/Y" }}</td>
+              <td class="td-actions">
+                <a href="#" class="btn-icon" title="Ver detalle">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+                       viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7
+                             -1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                  </svg>
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      {# ── Paginación ────────────────────────────────────────────────────── #}
+      {% if page_obj.has_other_pages %}
+      <nav class="pagination">
+        {% if page_obj.has_previous %}
+          <a href="?page={{ page_obj.previous_page_number }}&{{ query_string }}" class="page-btn">&laquo; Anterior</a>
+        {% else %}
+          <span class="page-btn page-btn--disabled">&laquo; Anterior</span>
+        {% endif %}
+
+        <span class="page-info">
+          Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}&{{ query_string }}" class="page-btn">Siguiente &raquo;</a>
+        {% else %}
+          <span class="page-btn page-btn--disabled">Siguiente &raquo;</span>
+        {% endif %}
+      </nav>
+      {% endif %}
+
+    {% else %}
+      {# ── Estado vacío ─────────────────────────────────────────────────── #}
+      <div class="empty-state">
+        <div class="empty-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+               stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M15.182 16.318A4.486 4.486 0 0012.016 15a4.486 4.486 0 00-3.198 1.318
+                     M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9
+                     10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z"/>
+          </svg>
+        </div>
+        <p class="empty-title">No se encontraron emprendedores</p>
+        <p class="empty-sub">Intenta ajustar los filtros de búsqueda.</p>
+      </div>
+    {% endif %}
+
+  </div>
+</body>
+</html>
